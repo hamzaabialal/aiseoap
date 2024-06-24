@@ -8,6 +8,7 @@ from core.models import SignupModel
 from django.db import models
 
 class Products(models.Model):
+    """This model is used to store the products of the user."""
     user = models.ForeignKey(SignupModel, on_delete=models.CASCADE, null=True, blank=True)
     shopify_product_id = models.CharField(max_length=100, unique=True)
     title = models.CharField(max_length=255)
@@ -34,9 +35,20 @@ class Products(models.Model):
 
 
 class ShopifyAccessToken(models.Model):
+    """This model is used to store the access token of the user."""
     user = models.ForeignKey(SignupModel, on_delete=models.CASCADE)
     access_token = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.email
+
+class AnalyticsData(models.Model):
+    """This model is used to store the analytics data of the user."""
+    user = models.ForeignKey(SignupModel, on_delete=models.CASCADE)
+    data = models.JSONField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.email
+

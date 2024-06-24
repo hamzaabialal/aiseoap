@@ -8,12 +8,13 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from Aiseoapp import settings
 from management.models import StoreManagement
-from shopifyproducts.models import Products, ShopifyAccessToken
+from shopifyproducts.models import Products, ShopifyAccessToken, AnalyticsData
 from shopifyproducts.serializers import ProductsSerializer
 
 
 # Create your views here.
 class FetchProductsFromShopify(APIView):
+    """This Api Is Used For Fetching The Products From Shopify."""
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
 
@@ -60,6 +61,7 @@ class FetchProductsFromShopify(APIView):
 
 
 class ListProducts(generics.ListAPIView):
+    """This Api Is Used For Listing The Products."""
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
     queryset = Products
@@ -69,6 +71,7 @@ class ListProducts(generics.ListAPIView):
         return Products.objects.filter(user=self.request.user)
 
 class ReteriveProduct(generics.RetrieveAPIView):
+    """This Api Is Used For Reteriving The Product."""
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
     queryset = Products
@@ -77,4 +80,25 @@ class ReteriveProduct(generics.RetrieveAPIView):
     def get_queryset(self):
         return Products.objects.filter(user=self.request.user)
 
+class FetchAnalyticsDataFromShopify(APIView):
+    """This Api Is Used For Fetching The ANalytics Data From Shopify."""
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    def get(self, request):
+        try:
+            store = StoreManagement.objects.get(user=request.user)
+            access_token = ShopifyAccessToken.objects.get(user=request.user).access_token
+            shopify_url = f"https://{store.store_name}.myshopify.com/admin/api/2021-07/analytics.json"
+            headers = {
+                "X-Shopify-Access-Token": access_token
+            }
+            response = requests.get(shopify_url, headers=headers)
+            if response.status_code == 200:
+                analytics_data = response.json()
+                AnalyticsData.objects.create(user=request.user, data=analytics_data)
+                return Response({"message": "Analytics data fetched and stored successfully."}, status=200)
+            return Response({"error": "Failed to fetch analytics data from Shopify."}, status=response.status_code)
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)
 
