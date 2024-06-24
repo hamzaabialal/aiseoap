@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate
+from django.views.generic import TemplateView
 from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -63,3 +64,6 @@ class LogoutView(APIView):
             return Response({"message": "Logout successful"}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
+
+class LoginPageView(TemplateView):
+    template_name = "auth/login-2.html"

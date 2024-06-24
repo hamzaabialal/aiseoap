@@ -1,0 +1,940 @@
+{% load static i18n %}
+
+<!-- ========== Left Sidebar Start ========== -->
+<div class="left-side-menu">
+  <div class="h-100">
+    <div class="sidebar-content">
+      <div class="sidebar-icon-menu h-100" data-simplebar>
+        <!-- LOGO -->
+        <a href="/" class="logo">
+          <span>
+            <img
+              src="{% static 'images/logo-sm-light.png' %}"
+              alt=""
+              height="28"
+            />
+          </span>
+        </a>
+        <nav class="nav flex-column" id="two-col-sidenav-main">
+          <a class="nav-link" href="#dashboard" title="Dashboard">
+            <i data-feather="home"></i>
+          </a>
+          <a class="nav-link" href="#apps" title="Apps">
+            <i data-feather="grid"></i>
+          </a>
+          <a class="nav-link" href="#pages" title="Pages">
+            <i data-feather="file-text"></i>
+          </a>
+          <a class="nav-link" href="#layouts" title="Layouts">
+            <i data-feather="layout"></i>
+          </a>
+          <a class="nav-link" href="#uielements" title="UI Elements">
+            <i data-feather="briefcase"></i>
+          </a>
+          <a class="nav-link" href="#components" title="Components">
+            <i data-feather="package"></i>
+          </a>
+          <a class="nav-link" href="/" title="Widgets">
+            <i data-feather="gift"></i>
+          </a>
+        </nav>
+      </div>
+      <!--- Sidemenu -->
+      <div class="sidebar-main-menu">
+        <div id="two-col-menu" class="h-100" data-simplebar>
+          <div class="twocolumn-menu-item d-block" id="dashboard">
+            <div class="title-box">
+              <h5 class="menu-title">Dashboards</h5>
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Dashboard 1</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Dashboard 2</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Dashboard 3</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Dashboard 4</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="twocolumn-menu-item" id="apps">
+            <h5 class="menu-title">Apps</h5>
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="/"
+                  >Calendar</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/">Chat</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  href="#sidebarEcommerce"
+                  data-bs-toggle="collapse"
+                  class="nav-link"
+                >
+                  <span> Ecommerce </span>
+                  <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarEcommerce">
+                  <ul class="nav-second-level">
+                    <li>
+                      <a href="/"
+                        >Dashboard</a
+                      >
+                    </li>
+                    <li>
+                      <a href="/">Products</a>
+                    </li>
+                    <li>
+                      <a href="/"
+                        >Product Detail</a
+                      >
+                    </li>
+                    <li>
+                      <a href="/"
+                        >Add Product</a
+                      >
+                    </li>
+                    <li>
+                      <a href="/"
+                        >Customers</a
+                      >
+                    </li>
+                    <li>
+                      <a href="/">Orders</a>
+                    </li>
+                    <li>
+                      <a href="/"
+                        >Order Detail</a
+                      >
+                    </li>
+                    <li>
+                      <a href="/">Sellers</a>
+                    </li>
+                    <li>
+                      <a href="/"
+                        >Shopping Cart</a
+                      >
+                    </li>
+                    <li>
+                      <a href="/">Checkout</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a
+                  href="#sidebarCrm"
+                  data-bs-toggle="collapse"
+                  class="nav-link"
+                >
+                  <span> CRM </span>
+                  <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarCrm">
+                  <ul class="nav-second-level">
+                    <li>
+                      <a href="/">Dashboard</a>
+                    </li>
+                    <li>
+                      <a href="/">Contacts</a>
+                    </li>
+                    <li>
+                      <a href="/"
+                        >Opportunities</a
+                      >
+                    </li>
+                    <li>
+                      <a href="/">Leads</a>
+                    </li>
+                    <li>
+                      <a href="/">Customers</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a
+                  href="#sidebarEmail"
+                  data-bs-toggle="collapse"
+                  class="nav-link"
+                >
+                  <span> Email </span>
+                  <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarEmail">
+                  <ul class="nav-second-level">
+                    <li>
+                      <a href="/">Inbox</a>
+                    </li>
+                    <li>
+                      <a href="/">Read Email</a>
+                    </li>
+                    <li>
+                      <a href="/">Compose Email</a>
+                    </li>
+                    <li>
+                      <a href="/"
+                        >Email Templates</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/"
+                  >Social Feed</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/"
+                  >Companies</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  href="#sidebarProjects"
+                  data-bs-toggle="collapse"
+                  class="nav-link"
+                >
+                  <span> Projects </span>
+                  <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarProjects">
+                  <ul class="nav-second-level">
+                    <li>
+                      <a href="/">List</a>
+                    </li>
+                    <li>
+                      <a href="/">Detail</a>
+                    </li>
+                    <li>
+                      <a href="/"
+                        >Create Project</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a
+                  href="#sidebarTasks"
+                  data-bs-toggle="collapse"
+                  class="nav-link"
+                >
+                  <span> Tasks </span>
+                  <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarTasks">
+                  <ul class="nav-second-level">
+                    <li>
+                      <a href="/">List</a>
+                    </li>
+                    <li>
+                      <a href="/">Details</a>
+                    </li>
+                    <li>
+                      <a href="/"
+                        >Kanban Board</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a
+                  href="#sidebarContacts"
+                  data-bs-toggle="collapse"
+                  class="nav-link"
+                >
+                  <span> Contacts </span>
+                  <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarContacts">
+                  <ul class="nav-second-level">
+                    <li>
+                      <a href="/">Members List</a>
+                    </li>
+                    <li>
+                      <a href="/">Profile</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a
+                  href="#sidebarTickets"
+                  data-bs-toggle="collapse"
+                  class="nav-link"
+                >
+                  <span> Tickets </span>
+                  <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarTickets">
+                  <ul class="nav-second-level">
+                    <li>
+                      <a href="/">List</a>
+                    </li>:
+                    <li>
+                      <a href="/">Detail</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/"
+                  >File Manager</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="twocolumn-menu-item" id="pages">
+            <div class="title-box">
+              <h5 class="menu-title">Pages</h5>
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Starter</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Timeline</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Sitemap</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Invoice</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/">FAQs</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Search Results</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Pricing</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Maintenance</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Coming Soon</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Gallery</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    href="#sidebarAuth"
+                    data-bs-toggle="collapse"
+                    class="nav-link"
+                  >
+                    <span> Auth Pages </span>
+                    <span class="menu-arrow"></span>
+                  </a>
+                  <div class="collapse" id="sidebarAuth">
+                    <ul class="nav-second-level">
+                      <li>
+                        <a href="/">Log In</a>
+                      </li>
+                      <li>
+                        <a href="/">Log In 2</a>
+                      </li>
+                      <li>
+                        <a href="/">Register</a>
+                      </li>
+                      <li>
+                        <a href="/">Register 2</a>
+                      </li>
+                      <li>
+                        <a href="/"
+                          >Signin - Signup</a
+                        >
+                      </li>
+                      <li>
+                        <a href="/"
+                          >Signin - Signup 2</a
+                        >
+                      </li>
+                      <li>
+                        <a href="/"
+                          >Recover Password</a
+                        >
+                      </li>
+                      <li>
+                        <a href="/"
+                          >Recover Password 2</a
+                        >
+                      </li>
+                      <li>
+                        <a href="/">Lock Screen</a>
+                      </li>
+                      <li>
+                        <a href="/"
+                          >Lock Screen 2</a
+                        >
+                      </li>
+                      <li>
+                        <a href="/">Logout</a>
+                      </li>
+                      <li>
+                        <a href="/">Logout 2</a>
+                      </li>
+                      <li>
+                        <a href="/"
+                          >Confirm Mail</a
+                        >
+                      </li>
+                      <li>
+                        <a href="/"
+                          >Confirm Mail 2</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a
+                    href="#sidebarErrors"
+                    data-bs-toggle="collapse"
+                    class="nav-link"
+                  >
+                    Error Pages <span class="menu-arrow"></span>
+                  </a>
+                  <div class="collapse" id="sidebarErrors">
+                    <ul class="nav-second-level">
+                      <li>
+                        <a href="/">Error 404</a>
+                      </li>
+                      <li>
+                        <a href="/">Error 404 Two</a>
+                      </li>
+                      <li>
+                        <a href="/">Error 404-alt</a>
+                      </li>
+                      <li>
+                        <a href="/}">Error 500</a>
+                      </li>
+                      <li>
+                        <a href="/">Error 500 Two</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="twocolumn-menu-item" id="layouts">
+            <div class="title-box">
+              <h5 class="menu-title">Layouts</h5>
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Vertical</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="/"
+                    >Horizontal</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Detached</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="/"
+                    >Two Column Menu</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="/"
+                    >Two Tones Icons</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="/"
+                    >Preloader</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="twocolumn-menu-item" id="uielements">
+            <div class="title-box">
+              <h5 class="menu-title">UI Elements</h5>
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="/"
+                    >Buttons</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="/"
+                    >Cards</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="/"
+                    >Avatars</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="{% url 'components:components.base_ui.portlets'%}"
+                    >Portlets</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="{% url 'components:components.base_ui.tabs-accordions'%}"
+                    >Tabs & Accordions</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="{% url 'components:components.base_ui.modals'%}"
+                    >Modals</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="{% url 'components:components.base_ui.progress'%}"
+                    >Progress</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="{% url 'components:components.base_ui.notifications'%}"
+                    >Notifications</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="{% url 'components:components.base_ui.offcanvas'%}"
+                    >Offcanvas</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="{% url 'components:components.base_ui.spinners'%}"
+                    >Spinners</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="{% url 'components:components.base_ui.images'%}"
+                    >Images</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="{% url 'components:components.base_ui.carousel'%}"
+                    >Carousel</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="{% url 'components:components.base_ui.list-group'%}"
+                    >List Group</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="{% url 'components:components.base_ui.video'%}"
+                    >Embed Video</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="{% url 'components:components.base_ui.dropdowns'%}"
+                    >Dropdowns</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="{% url 'components:components.base_ui.ribbons'%}"
+                    >Ribbons</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'components:components.base_ui.tooltips-popovers'%}"
+                    >Tooltips & Popovers</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'components:components.base_ui.general'%}">General UI</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'components:components.base_ui.typography'%}">Typography</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'components:components.base_ui.grid'%}">Grid</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="twocolumn-menu-item" id="components">
+            <div class="title-box">
+              <h5 class="menu-title">Components</h5>
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a
+                    href="#sidebarExtendedui"
+                    data-bs-toggle="collapse"
+                    class="nav-link"
+                  >
+                    <span class="badge bg-info float-end">Hot</span>
+                    <span> Extended UI </span>
+                  </a>
+                  <div class="collapse" id="sidebarExtendedui">
+                    <ul class="nav-second-level">
+                      <li>
+                        <a href="{% url 'components:components.extended.nestable'%}">Nestable List</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.extended.range-slider'%}">Range Slider</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.extended.dragula'%}">Dragula</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.extended.animation'%}">Animation</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.extended.sweet-alert'%}">Sweet Alert</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.extended.tour'%}">Tour Page</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.extended.scrollspy'%}">Scrollspy</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.extended.loading-buttons'%}"
+                          >Loading Buttons</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a
+                    href="#sidebarIcons"
+                    data-bs-toggle="collapse"
+                    class="nav-link"
+                  >
+                    <span> Icons </span>
+                    <span class="menu-arrow"></span>
+                  </a>
+                  <div class="collapse" id="sidebarIcons">
+                    <ul class="nav-second-level">
+                      <li>
+                        <a href="{% url 'components:components.icons.two-tone'%}">Two Tone Icons</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.icons.feather'%}">Feather Icons</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.icons.mdi'%}">Material Design Icons</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.icons.dripicons'%}">Dripicons</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.icons.font-awesome'%}">Font Awesome 5</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.icons.themify'%}">Themify</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.icons.simple-line'%}">Simple Line</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.icons.weather'%}">Weather</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a
+                    href="#sidebarForms"
+                    data-bs-toggle="collapse"
+                    class="nav-link"
+                  >
+                    <span> Forms </span>
+                    <span class="menu-arrow"></span>
+                  </a>
+                  <div class="collapse" id="sidebarForms">
+                    <ul class="nav-second-level">
+                      <li>
+                        <a href="{% url 'components:components.forms.elements'%}">General Elements</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.forms.advanced'%}">Advanced</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.forms.validation'%}">Validation</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.forms.pickers'%}">Pickers</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.forms.wizard'%}">Wizard</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.forms.masks'%}">Masks</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.forms.quilljs'%}">Quilljs Editor</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.forms.file-uploads'%}">File Uploads</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.forms.x-editable'%}">X Editable</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.forms.image-crop'%}">Image Crop</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a
+                    href="#sidebarTables"
+                    data-bs-toggle="collapse"
+                    class="nav-link"
+                  >
+                    <span> Tables </span>
+                    <span class="menu-arrow"></span>
+                  </a>
+                  <div class="collapse" id="sidebarTables">
+                    <ul class="nav-second-level">
+                      <li>
+                        <a href="{% url 'components:components.tables.basic'%}">Basic Tables</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.tables.datatables'%}">Data Tables</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.tables.editable'%}">Editable Tables</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.tables.responsive'%}">Responsive Tables</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.tables.footables'%}">FooTable</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.tables.bootstrap'%}">Bootstrap Tables</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.tables.tablesaw'%}">Tablesaw Tables</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.tables.jsgrid'%}">JsGrid Tables</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a
+                    href="#sidebarCharts"
+                    data-bs-toggle="collapse"
+                    class="nav-link"
+                  >
+                    <span> Charts </span>
+                    <span class="menu-arrow"></span>
+                  </a>
+                  <div class="collapse" id="sidebarCharts">
+                    <ul class="nav-second-level">
+                      <li>
+                        <a href="{% url 'components:components.charts.apex'%}">Apex Charts</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.charts.flot'%}">Flot Charts</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.charts.morris'%}">Morris Charts</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.charts.chartjs'%}">Chartjs Charts</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.charts.peity'%}">Peity Charts</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.charts.chartist'%}">Chartist Charts</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.charts.c3'%}">C3 Charts</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.charts.sparklines'%}">Sparklines Charts</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.charts.knob'%}">Jquery Knob Charts</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a
+                    href="#sidebarMaps"
+                    data-bs-toggle="collapse"
+                    class="nav-link"
+                  >
+                    <span> Maps </span>
+                    <span class="menu-arrow"></span>
+                  </a>
+                  <div class="collapse" id="sidebarMaps">
+                    <ul class="nav-second-level">
+                      <li>
+                        <a href="{% url 'components:components.maps.google'%}">Google Maps</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.maps.vector'%}">Vector Maps</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'components:components.maps.mapael'%}">Mapael Maps</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a
+                    href="#sidebarMultilevel"
+                    data-bs-toggle="collapse"
+                    class="nav-link"
+                  >
+                    <span> Multi Level </span>
+                    <span class="menu-arrow"></span>
+                  </a>
+                  <div class="collapse" id="sidebarMultilevel">
+                    <ul class="nav-second-level">
+                      <li>
+                        <a href="#sidebarMultilevel2" data-bs-toggle="collapse">
+                          Second Level <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="sidebarMultilevel2">
+                          <ul class="nav-second-level">
+                            <li>
+                              <a href="javascript: void(0);">Item 1</a>
+                            </li>
+                            <li>
+                              <a href="javascript: void(0);">Item 2</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+
+                      <li>
+                        <a href="#sidebarMultilevel3" data-bs-toggle="collapse">
+                          Third Level <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="sidebarMultilevel3">
+                          <ul class="nav-second-level">
+                            <li>
+                              <a href="javascript: void(0);">Item 1</a>
+                            </li>
+                            <li>
+                              <a
+                                href="#sidebarMultilevel4"
+                                data-bs-toggle="collapse"
+                              >
+                                Item 2 <span class="menu-arrow"></span>
+                              </a>
+                              <div class="collapse" id="sidebarMultilevel4">
+                                <ul class="nav-second-level">
+                                  <li>
+                                    <a href="javascript: void(0);">Item 1</a>
+                                  </li>
+                                  <li>
+                                    <a href="javascript: void(0);">Item 2</a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <!-- End Sidebar -->
+  </div>
+  <!-- Sidebar -left -->
+</div>
+<!-- Left Sidebar End -->

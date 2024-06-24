@@ -1,5 +1,5 @@
 import requests
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -80,25 +80,27 @@ class ReteriveProduct(generics.RetrieveAPIView):
     def get_queryset(self):
         return Products.objects.filter(user=self.request.user)
 
-class FetchAnalyticsDataFromShopify(APIView):
-    """This Api Is Used For Fetching The ANalytics Data From Shopify."""
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
 
+class FetchShopifyAnalytics(APIView):
     def get(self, request):
         try:
-            store = StoreManagement.objects.get(user=request.user)
-            access_token = ShopifyAccessToken.objects.get(user=request.user).access_token
-            shopify_url = f"https://{store.store_name}.myshopify.com/admin/api/2021-07/analytics.json"
+            store = get_object_or_404(StoreManagement, user=request.user)
+            access_token = get_object_or_404(ShopifyAccessToken, user=request.user).access_token
+            shopify_url = f"https://{store.store_name}.myshopify.com/admin/api/2021-07/reports.json"
             headers = {
                 "X-Shopify-Access-Token": access_token
             }
+
             response = requests.get(shopify_url, headers=headers)
             if response.status_code == 200:
                 analytics_data = response.json()
                 AnalyticsData.objects.create(user=request.user, data=analytics_data)
                 return Response({"message": "Analytics data fetched and stored successfully."}, status=200)
-            return Response({"error": "Failed to fetch analytics data from Shopify."}, status=response.status_code)
+            elif response.status_code == 403:
+                return Response({"error": "Access forbidden: Check your API permissions."}, status=403)
+            else:
+                return Response(
+                    {"error": f"Failed to fetch analytics data from Shopify. Status code: {response.status_code}"},
+                    status=response.status_code)
         except Exception as e:
             return Response({"error": str(e)}, status=400)
-
