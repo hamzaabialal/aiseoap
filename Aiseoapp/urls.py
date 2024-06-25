@@ -26,7 +26,9 @@ urlpatterns = [
     path('stores/', include('management.urls')),
     path('products/', include('shopifyproducts.urls')),
     path('compitator/', include("CompitatorAnalysis.urls")),
-    path('', include('dashboard.urls'), name='dashboard')
+    path('', include('dashboard.urls'), name='dashboard'),
+    path('keyword/', include('keywordanalysis.urls')),
+    path('blog/', include('blogmanagement.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

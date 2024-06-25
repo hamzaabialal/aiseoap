@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
+from django.views.generic import TemplateView
 from .models import StoreManagement
 from .serializers import StoreManagementSerializer
 from rest_framework import generics
@@ -20,5 +20,6 @@ class StoreManagementReterive(generics.RetrieveAPIView):
     serializer_class = StoreManagementSerializer
     authentication_classes = [JWTAuthentication]
 
-
+class StoreManagementTemplate(TemplateView):
+    template_name = "store.html"
 

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{% trans "Store Management" %}{% endblock head_title %}
+
+{% block body_extra %}
+class="loading auth-fluid-pages pb-0"
+{% endblock body_extra %}
+
+{% block page_content %}
+<div class="auth-fluid">
+    <!--Auth fluid left content -->
+    <div class="auth-fluid-form-box">
+        <div class="align-items-center d-flex h-100">
+            <div class="card-body">
+
+                <!-- Logo -->
+                <div class="auth-brand text-center text-lg-start">
+                    <div class="auth-logo">
+                        <a href="/" class="logo logo-dark text-center">
+                            <span class="logo-lg">
+                                <img src="{% static 'images/logo-dark.png' %}" alt="" height="22">
+                            </span>
+                        </a>
+                        <a href="/" class="logo logo-light text-center">
+                            <span class="logo-lg">
+                                <img src="{% static 'images/logo-light.png' %}" alt="" height="22">
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- title-->
+                <h4 class="mt-0">Store Management</h4>
+                <p class="text-muted mb-4">Please enter your store details below.</p>
+
+                <!-- form -->
+                <form id="store-management-form">
+                    <div class="mb-3">
+                        <label for="store_name" class="form-label">Store Name</label>
+                        <input class="form-control" type="text" id="store_name" required="" placeholder="Enter your store name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="store_address" class="form-label">Store Address</label>
+                        <textarea class="form-control" id="store_address" required="" placeholder="Enter your store address"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="store_phone" class="form-label">Store Phone</label>
+                        <input class="form-control" type="text" id="store_phone" required="" placeholder="Enter your store phone">
+                    </div>
+                    <div class="mb-3">
+                        <label for="store_email" class="form-label">Store Email</label>
+                        <input class="form-control" type="email" id="store_email" required="" placeholder="Enter your store email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="store_owner" class="form-label">Store Owner</label>
+                        <input class="form-control" type="text" id="store_owner" required="" placeholder="Enter the store owner name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="store_created_at" class="form-label">Store Created At</label>
+                        <input class="form-control" type="datetime-local" id="store_created_at" required="" placeholder="Enter the store creation date">
+                    </div>
+                    <div class="text-center d-grid">
+                        <button class="btn btn-primary" type="submit">Save Store Details</button>
+                    </div>
+                </form>
+                <!-- end form-->
+
+                <!-- Footer-->
+                <footer class="footer footer-alt">
+                    <p class="text-muted">Need help? <a href="/" class="text-muted ms-1"><b>Contact Support</b></a></p>
+                </footer>
+
+            </div> <!-- end .card-body -->
+        </div> <!-- end .align-items-center.d-flex.h-100-->
+    </div>
+    <!-- end auth-fluid-form-box-->
+
+    <!-- Auth fluid right content -->
+    <div class="auth-fluid-right text-center">
+        <div class="auth-user-testimonial">
+            <h2 class="mb-3 text-white">I love the service!</h2>
+            <p class="lead"><i class="mdi mdi-format-quote-open"></i> This store management system is incredibly easy to use and has streamlined our operations significantly. Highly recommend! <i class="mdi mdi-format-quote-close"></i>
+            </p>
+            <h5 class="text-white">
+                - Store Owner
+            </h5>
+        </div> <!-- end auth-user-testimonial-->
+    </div>
+    <!-- end Auth fluid right content -->
+</div>
+<!-- end auth-fluid-->
+
+
+
+{% endblock %}

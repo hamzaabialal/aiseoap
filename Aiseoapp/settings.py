@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'crispy_forms',
+    'keywordanalysis',
+    'blogmanagement',
 
 ]
 
@@ -170,3 +172,4 @@ REST_FRAMEWORK = {
     ],
 }
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+GROQ_API_KEY = "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"
