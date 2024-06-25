@@ -116,7 +116,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
     const email = document.getElementById('emailaddress').value;
     const password = document.getElementById('password').value;
 
-    const response = await fetch('/api/login/', {
+    const response = await fetch('/auth/login/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
         const data = await response.json();
         localStorage.setItem('access_token', data.access_token);
         localStorage.setItem('refresh_token', data.refresh_token);
-        window.location.href = "/";
+        window.location.href = "/dashboard/";
     } else {
         alert('Invalid credentials');
     }
