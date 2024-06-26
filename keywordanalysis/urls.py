@@ -8,4 +8,6 @@ urlpatterns = [
     path('keyword_ranking/', views.KeywordRankingView.as_view(), name='keyword_ranking'),
     path('keywordoptimization/', views.KeywordsOptimization.as_view(), name='keyword'),
     path('product_discription/', views.FetchProductDescription.as_view(), name='product_discription'),
+    path('keywordresearch/', views.KeywordResearchView.as_view(), name="keyword_research"),
+    path('reterivekeywords/<int:user_id>/', views.ReteriveKeywordResearch.as_view(), name='reterive_keywords')
 ]

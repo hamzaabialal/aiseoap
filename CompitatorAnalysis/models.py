@@ -1,7 +1,9 @@
 from django.db import models
 
-# Create your models here.
 class SerpResult(models.Model):
-    keyword = models.CharField(max_length=255)
-    display_link = models.CharField(max_length=255)
-    rank = models.IntegerField()
+    query = models.JSONField(max_length=255)
+    gl = models.CharField(max_length=10, default='us')
+    Keywords = models.JSONField()
+
+    def __str__(self):
+        return f"SerpResult - Query: {self.query}, GL: {self.gl}"
