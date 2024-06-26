@@ -67,3 +67,6 @@ class LogoutView(APIView):
 
 class LoginPageView(TemplateView):
     template_name = "auth/login-2.html"
+
+class SignupPageView(TemplateView):
+    template_name = "auth/register-2.html"

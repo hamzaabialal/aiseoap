@@ -1,12 +1,16 @@
 import json
 
 from groq import Groq
-
+import advertools as adv
 from Aiseoapp import settings
+from CompitatorAnalysis.models import SerpResult
+from keywordanalysis.models import KeywordResearch
+from keywordanalysis.serializers import KeywordResearchSerializer
 from management.models import StoreManagement
 from shopifyproducts.models import Products
 from shopifyproducts.serializers import ProductsSerializer
 import requests
+from rest_framework.generics import ListAPIView
 from bs4 import BeautifulSoup
 import nltk
 from nltk.tokenize import word_tokenize
@@ -156,5 +160,37 @@ class KeywordsOptimization(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class KeywordResearchView(APIView):
+    def post(self, request):
+        keyword = request.data.get("keyword")
+        gl = request.data.get('gl', 'us')
+        compitators = SerpResult.objects.filter(query__contains=keyword).last()
+        compatitor_keyword = compitators.Keywords
+        if not keyword:
+            return Response({"error": "keyword is a required parameter."}, status=400)
 
+        serp_rankings = adv.serp_goog(q=compatitor_keyword, gl=[gl], cx='65ad0787cb9c54f76',
+                                      key='AIzaSyAP-3UQVQdLpn5OvnZQiZy8ABruu3O1S-M')
+        serp_rankings.to_csv('serp_heatmap.csv')
+        new_keywords = serp_rankings["title"].tolist()
+
+        serp_data = {
+            'user': request.user.pk,
+            'compatitor_keywords': compatitor_keyword,
+            'gl': gl,
+            'Keywords': new_keywords
+        }
+        serializer = KeywordResearchSerializer(data=serp_data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+
+class ReteriveKeywordResearch(ListAPIView):
+    serializer_class = KeywordResearchSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs["user_id"]
+        queryset = KeywordResearch.objects.filter(user=user_id)
+        return queryset
 
