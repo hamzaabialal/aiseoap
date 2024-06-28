@@ -1,3 +1,7 @@
+from datetime import datetime, timedelta
+
+from django.utils.timezone import now
+from rest_framework import status
 import requests
 from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
@@ -5,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
+from collections import Counter, defaultdict
 from Aiseoapp import settings
 from management.models import StoreManagement
 from shopifyproducts.models import Products, ShopifyAccessToken, AnalyticsData
@@ -82,25 +86,109 @@ class ReteriveProduct(generics.RetrieveAPIView):
 
 
 class FetchShopifyAnalytics(APIView):
-    def get(self, request):
-        try:
-            store = get_object_or_404(StoreManagement, user=request.user)
-            access_token = get_object_or_404(ShopifyAccessToken, user=request.user).access_token
-            shopify_url = f"https://{store.store_name}.myshopify.com/admin/api/2021-07/reports.json"
-            headers = {
-                "X-Shopify-Access-Token": access_token
-            }
+    def fetch_orders(self, store, access_token, start_date, end_date):
+        params = {
+            "status": "any",
+            "created_at_min": start_date.isoformat() + "T00:00:00Z",
+            "created_at_max": end_date.isoformat() + "T23:59:59Z"
+        }
+        orders_endpoint = f"https://{store.store_name}.myshopify.com/admin/api/2024-01/orders.json"
+        headers = {
+            "X-Shopify-Access-Token": access_token,
+            "Content-Type": "application/json"
+        }
+        response = requests.get(orders_endpoint, headers=headers, params=params)
+        if response.status_code == 200:
+            return response.json().get('orders', [])
+        return []
 
-            response = requests.get(shopify_url, headers=headers)
-            if response.status_code == 200:
-                analytics_data = response.json()
-                AnalyticsData.objects.create(user=request.user, data=analytics_data)
-                return Response({"message": "Analytics data fetched and stored successfully."}, status=200)
-            elif response.status_code == 403:
-                return Response({"error": "Access forbidden: Check your API permissions."}, status=403)
-            else:
-                return Response(
-                    {"error": f"Failed to fetch analytics data from Shopify. Status code: {response.status_code}"},
-                    status=response.status_code)
-        except Exception as e:
-            return Response({"error": str(e)}, status=400)
+    def calculate_total_sales(self, orders):
+        return sum(float(order['total_price']) for order in orders)
+
+    def get(self, request, *args, **kwargs):
+        store = get_object_or_404(StoreManagement, user=request.user)
+        access_token = get_object_or_404(ShopifyAccessToken, user=request.user).access_token
+
+        today = datetime.utcnow()
+        start_of_week = today - timedelta(days=today.weekday() + 7)
+        end_of_week = start_of_week + timedelta(days=6)
+
+        start_of_last_week = start_of_week - timedelta(days=7)
+        end_of_last_week = start_of_week - timedelta(days=1)
+
+        start_of_month = today.replace(day=1)
+        end_of_last_month = start_of_month - timedelta(days=1)
+        start_of_last_month = end_of_last_month.replace(day=1)
+
+        orders_last_week = self.fetch_orders(store, access_token, start_of_last_week, end_of_last_week)
+        orders_last_month = self.fetch_orders(store, access_token, start_of_last_month, end_of_last_month)
+        orders_current_month = self.fetch_orders(store, access_token, start_of_month, today)
+
+        last_week_sales = self.calculate_total_sales(orders_last_week)
+        last_month_sales = self.calculate_total_sales(orders_last_month)
+
+        orders = self.fetch_orders(store, access_token, start_of_month, today)
+        total_sales = self.calculate_total_sales(orders)
+        total_orders = len(orders)
+        products_sold = sum(sum(int(line_item['quantity']) for line_item in order['line_items']) for order in orders)
+        new_customers = sum(1 for order in orders if 'customer' in order and order['customer'] and order['customer'].get('orders_count', 0) == 1)
+        average_order_value = total_sales / total_orders if total_orders > 0 else 0
+        repeat_customers = sum(1 for order in orders if 'customer' in order and order['customer'] and order['customer'].get('orders_count', 0) > 1)
+        repeat_customer_rate = repeat_customers / total_orders if total_orders > 0 else 0
+
+        sales_by_country = defaultdict(float)
+        for order in orders:
+            country = order['shipping_address']['country'] if order.get('shipping_address') else 'Unknown'
+            sales_by_country[country] += float(order['total_price'])
+
+        orders_by_month = defaultdict(int)
+        for order in orders:
+            month = datetime.strptime(order['created_at'], '%Y-%m-%dT%H:%M:%S%z').strftime('%Y-%m')
+            orders_by_month[month] += 1
+
+        product_counter = Counter()
+        for order in orders:
+            for item in order['line_items']:
+                product_counter[item['name']] += item['quantity']
+        top_products = product_counter.most_common(10)
+
+        top_customer_locations = Counter()
+        for order in orders:
+            if order.get('customer') and order['customer'].get('default_address'):
+                city = order['customer']['default_address']['city']
+                top_customer_locations[city] += 1
+        top_customer_locations = top_customer_locations.most_common(10)
+
+        # Fetch total products
+        products_count_endpoint = f"https://{store.store_name}.myshopify.com/admin/api/2024-01/products/count.json"
+        response = requests.get(products_count_endpoint, headers=self.headers)
+        product_count = response.json().get('count', 0) if response.status_code == 200 else 0
+
+        # Fetch total customers
+        customers_count_endpoint = f"https://{store.store_name}.myshopify.com/admin/api/2024-01/customers/count.json"
+        response = requests.get(customers_count_endpoint, headers=self.headers)
+        customer_count = response.json().get('count', 0) if response.status_code == 200 else 0
+
+        # Set your target sale amount here
+        target_sale = 200000
+
+        analytics_data = {
+            "total_sales": total_sales,
+            "total_orders": total_orders,
+            "products_sold": products_sold,
+            "new_customers": new_customers,
+            "average_order_value": average_order_value,
+            "repeat_customer_rate": repeat_customer_rate,
+            "sales_by_country": dict(sales_by_country),
+            "orders_by_month": dict(orders_by_month),
+            "top_products": top_products,
+            "top_customer_locations": top_customer_locations,
+            "total_products": product_count,
+            "total_customers": customer_count,
+            "target_sale": target_sale,
+            "last_week_sale": last_week_sales,
+            "last_month_sale": last_month_sales,
+        }
+        AnalyticsData.objects.create(user=request.user, data=analytics_data)
+
+        return Response({"message": "Analytics data saved successfully"}, status=status.HTTP_200_OK)
