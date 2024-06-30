@@ -1,0 +1,242 @@
+{% extends "vertical_base.html" %}
+{% load static i18n %}
+{% block head_title%}{% trans "Ecommerce Products" %}{% endblock head_title %}
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">UBold</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">eCommerce</a>
+            </li>
+            <li class="breadcrumb-item active">Products</li>
+          </ol>
+        </div>
+        <h4 class="page-title">Products</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row justify-content-between">
+            <div class="col-auto">
+              <form class="d-flex flex-wrap align-items-center">
+                <label for="inputPassword2" class="visually-hidden">Search</label>
+                <div class="me-3">
+                  <input type="search" class="form-control my-1 my-lg-0" id="inputPassword2" placeholder="Search..." />
+                </div>
+                <label for="status-select" class="me-2">Sort By</label>
+                <div class="me-sm-3">
+                  <select class="form-select my-1 my-lg-0" id="status-select">
+                    <option selected="">All</option>
+                    <option value="1">Popular</option>
+                    <option value="2">Price Low</option>
+                    <option value="3">Price High</option>
+                    <option value="4">Sold Out</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+            <div class="col-auto">
+              <div class="text-lg-end my-1 my-lg-0">
+                <button type="button" class="btn btn-success waves-effect waves-light me-1">
+                  <i class="mdi mdi-cog"></i>
+                </button>
+                <button type="button" id="fetch-products-btn" class="btn btn-danger waves-effect waves-light">
+                  <i class="mdi mdi-plus-circle me-1"></i>Fetch Products
+                </button>
+              </div>
+            </div>
+            <!-- end col-->
+          </div>
+          <!-- end row -->
+        </div>
+      </div>
+      <!-- end card -->
+    </div>
+    <!-- end col-->
+  </div>
+  <!-- end row-->
+
+  <div id="products-container" class="row row-cols-1 row-cols-md-4 g-4">
+    {% for product in products %}
+    <div class="col">
+      <div class="card product-box" id="{{ product.id }}">
+        <div class="card-body">
+          <div class="product-action">
+            <a href="javascript: void(0);" class="btn btn-success btn-xs waves-effect waves-light"><i class="mdi mdi-pencil"></i></a>
+            <a href="javascript: void(0);" class="btn btn-danger btn-xs waves-effect waves-light"><i class="mdi mdi-close"></i></a>
+          </div>
+          <div class="bg-light">
+            <img src="{{ product.img }}" alt="product-pic" class="img-fluid" onerror="this.src='https://via.placeholder.com/150';"/>
+          </div>
+          <div class="product-info">
+            <div class="row align-items-center">
+              <div class="col">
+                <h5 class="font-16 mt-0 sp-line-1">
+                  <a href="{{ product.product_url }}" class="text-dark">{{ product.title }}</a>
+                </h5>
+                <div class="text-warning mb-2 font-13">
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                </div>
+                <h5 class="m-0">
+                  <span class="text-muted">Stocks : {{ product.inventory_quantity }} pcs</span>
+                </h5>
+              </div>
+              <div class="col-auto">
+                <div class="product-price-tag">${{ product.price }}</div>
+              </div>
+            </div>
+            <!-- end row -->
+          </div>
+          <!-- end product info-->
+        </div>
+      </div>
+      <!-- end card-->
+    </div>
+    <!-- end col-->
+    {% endfor %}
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <ul class="pagination pagination-rounded justify-content-end mb-3">
+        <li class="page-item">
+          <a class="page-link" href="javascript: void(0);" aria-label="Previous">
+            <span aria-hidden="true">«</span>
+            <span class="visually-hidden">Previous</span>
+          </a>
+        </li>
+        {% for page_num in page_range %}
+        <li class="page-item {% if page_num == page %}active{% endif %}">
+          <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+        </li>
+        {% endfor %}
+        <li class="page-item">
+          <a class="page-link" href="javascript: void(0);" aria-label="Next">
+            <span aria-hidden="true">»</span>
+            <span class="visually-hidden">Next</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- end col-->
+  </div>
+  <!-- end row-->
+</div>
+<!-- container -->
+<script>
+document.getElementById('fetch-products-btn').addEventListener('click', function() {
+    const access_token = localStorage.getItem('access_token');
+    if (!access_token){
+        window.location.href = "/auth/login/";
+        return;
+    }
+
+    fetch('/products/fetch/', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const productsContainer = document.getElementById('products-container');
+        productsContainer.innerHTML = ''; // Clear existing products
+
+        // Assuming 20 products per page for pagination
+        const productsPerPage = 20;
+        const totalPages = Math.ceil(data.length / productsPerPage);
+        let currentPage = 1;
+
+        function renderProducts(page) {
+            productsContainer.innerHTML = '';
+            const startIndex = (page - 1) * productsPerPage;
+            const endIndex = Math.min(startIndex + productsPerPage, data.length);
+
+            for (let i = startIndex; i < endIndex; i++) {
+                const product = data[i];
+                const productElement = `
+                <div class="col">
+                    <div class="card product-box" id="${product.id}">
+                        <div class="card-body">
+                            <div class="product-action">
+                                <a href="javascript: void(0);" class="btn btn-success btn-xs waves-effect waves-light"><i class="mdi mdi-pencil"></i></a>
+                                <a href="javascript: void(0);" class="btn btn-danger btn-xs waves-effect waves-light"><i class="mdi mdi-close"></i></a>
+                            </div>
+                            <div class="bg-light">
+                                <img src="${product.img}" alt="product-pic" class="img-fluid" onerror="this.src='https://via.placeholder.com/150';"/>
+                            </div>
+                            <div class="product-info">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h5 class="font-16 mt-0 sp-line-1">
+                                            <a href="/" class="text-dark">${product.title}</a>
+                                        </h5>
+                                        <div class="text-warning mb-2 font-13">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <h5 class="m-0">
+                                            <span class="text-muted">Stocks : ${product.inventory_quantity} pcs</span>
+                                        </h5>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="product-price-tag">$${product.price}</div>
+                                    </div>
+                                </div>
+                                <!-- end row -->
+                            </div>
+                            <!-- end product info-->
+                        </div>
+                    </div>
+                    <!-- end card-->
+                </div>
+                `;
+                productsContainer.insertAdjacentHTML('beforeend', productElement);
+            }
+        }
+
+        // Initial render
+        renderProducts(currentPage);
+
+        // Pagination event listeners
+        document.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const action = this.getAttribute('aria-label');
+
+                if (action === 'Previous') {
+                    currentPage = Math.max(1, currentPage - 1);
+                } else if (action === 'Next') {
+                    currentPage = Math.min(totalPages, currentPage + 1);
+                } else {
+                    currentPage = parseInt(this.innerHTML);
+                }
+
+                renderProducts(currentPage);
+            });
+        });
+    })
+    .catch(error => console.error('Error fetching products:', error));
+});
+</script>
+{% endblock %}

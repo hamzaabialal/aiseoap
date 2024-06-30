@@ -11,14 +11,19 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <div class="page-title-box">
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <div>
+                    <h4 class="page-title">{% trans "Dashboard 2" %}</h4>
+                </div>
+                <div class="d-flex">
+                    <button id="fetchAnalyticsDataBtn" class="btn btn-primary ms-3">
+                        {% trans "Fetch Analytics Data" %}
+                    </button>
+                    <ol class="breadcrumb m-0 ms-3">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
                         <li class="breadcrumb-item active">{% trans "Dashboard 2" %}</li>
                     </ol>
                 </div>
-                <h4 class="page-title">{% trans "Dashboard 2" %}</h4>
             </div>
         </div>
     </div>
@@ -139,8 +144,9 @@
                     <h4 class="header-title mb-0">{% trans "Revenue By Location" %}</h4>
 
                     <div id="cardCollpase4" class="collapse pt-3 show">
-                        <div id="world-map-markers" style="height: 433px;"></div>
+                        <canvas id="chart" width="500" height="500"></canvas>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -186,44 +192,72 @@
 <script src="{% static 'libs/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
 <script src="{% static 'libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
 <script src="{% static 'libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        // Extracting sales by country data from Django template
-        var salesByCountryData = JSON.parse("{{ analytics_data.sales_by_country|escapejs }}");
-        console.log(salesByCountryData)
-
-        // Function to draw the map using Chart.js or D3.js
-        function drawSalesMap(data) {
-            // Logic to draw the map using Chart.js or D3.js
-            // Example using Chart.js and a basic bar chart
-            var countries = Object.keys(data);
-            var salesData = Object.values(data);
-
-            new Chart(document.getElementById("world-map-markers"), {
-                type: 'bar',
-                data: {
-                    labels: countries,
-                    datasets: [{
-                        label: 'Sales by Country',
-                        data: salesData,
-                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
+    document.addEventListener("DOMContentLoaded", function() {
+        const accessToken = localStorage.getItem('access_token');
+        console.log("Access_Token:", accessToken);
+        if (!accessToken) {
+            window.location.href = "/auth/login/";
+            return;
         }
 
-        // Calling the function to draw the map
-        drawSalesMap(salesByCountryData);
+        console.log("Access Token:", accessToken);
+
+        fetch('/api/protected-endpoint/', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Protected data:', data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+        let ctx = document.getElementById("chart").getContext("2d");
+        let chart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: {{ analytics_data.countries|safe }},
+                datasets: [
+                    {
+                        label: "Gross volume ($)",
+                        backgroundColor: "#79AEC8",
+                        borderColor: "#417690",
+                        data: {{ analytics_data.countries_data|safe }}
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    text: "Gross Volume in 2020",
+                    display: true
+                }
+            }
+        });
+
+        document.getElementById('fetchAnalyticsDataBtn').addEventListener('click', function() {
+            fetch('/products/analytics/', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Fetched analytics data:', data);
+                alert("PLease Reload Page For Getiing results")
+                // Handle the fetched data (e.g., update the dashboard)
+            })
+            .catch(error => {
+                console.error('Error fetching analytics data:', error);
+            });
+        });
     });
 </script>
 {% endblock %}

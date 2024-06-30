@@ -5,6 +5,7 @@ from rest_framework import serializers
 class StoreManagementSerializer(serializers.ModelSerializer):
     """Serializer for store management"""
     class Meta:
+
         model = StoreManagement
         fields = '__all__'
 

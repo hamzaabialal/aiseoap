@@ -1,0 +1,178 @@
+{% extends "vertical_base.html" %}
+{% load static i18n %}
+
+{% block head_title %}{% trans "Customers" %}{% endblock head_title %}
+{% block extra_css %}
+
+<!-- third party css -->
+<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+<!-- third party css end -->
+
+<style>
+.custom-btn {
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+}
+
+.form-control {
+  border-radius: 15px;
+  border: 1px solid #ced4da;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.table-custom {
+  width: 100%;
+  margin: auto;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+.table-custom th,
+.table-custom td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.table-custom th {
+  background-color: #f2f2f2;
+  color: black;
+}
+
+.table-custom tr:nth-child(even) {
+  background-color: #e6f7ff; /* Sky light blue */
+}
+
+.table-custom tr:hover {
+  background-color: #ddd;
+}
+</style>
+
+{% endblock %}
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h2>Let's start with basic info</h2>
+          <form id="competitor-form" class="form-inline">
+            <input type="text" class="form-control mb-2 mr-sm-2" id="query" placeholder="Keyword">
+            <input type="url" class="form-control mb-2 mr-sm-2" id="url" placeholder="URL">
+            <button type="submit" class="btn btn-dark mb-2 ml-auto custom-btn">Check Competitors</button>
+          </form>
+
+          <div class="table-responsive mt-4">
+                       <table
+              class="
+                table table-centered table-striped
+                dt-responsive
+                nowrap
+                w-100
+              "
+              id="products-datatable"
+            >
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Keywords</th>
+                  <th>Ranks</th>
+                  <th>Url</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for data in serp_data %}
+                <tr>
+                  <td class="table-user">
+                    <a href="javascript:void(0);" class="text-body fw-semibold"
+                      >{{data.search_term}}</a
+                    >
+                  </td>
+                    <td>{{data.search_term}}</td>
+
+                  <td>{{data.Keywords}}</td>
+                  <td>{{data.link}}</td>
+                  <td>{data.rank}</td>
+                </tr>
+              {% endfor %}
+
+              </tbody>
+
+            </table>
+          </div>
+        </div>
+        <!-- end card-body-->
+      </div>
+      <!-- end card-->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+</div>
+<!-- container -->
+{% endblock %}
+{% block extra_javascript %}
+
+<!-- Third party js -->
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js' %}"></script>
+<!-- Third party js ends -->
+
+<!-- Init js -->
+<script src="{% static 'js/pages/customers.init.js' %}"></script>
+<!-- Init js end -->
+<script>
+document.getElementById('competitor-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+        window.location.href = "/auth/login/";
+        return;
+    }
+
+    const query = document.getElementById('query').value;
+    const url = document.getElementById('url').value;
+
+    try {
+        const response = await fetch('/compitator/compitatoranalysis/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({
+                query: query,
+                url: url
+            })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Success:', data);
+            window.location.href = '/customers/';
+            alert('Please Reload Page For Getting Results');
+        } else {
+            console.error('Error:', response.statusText);
+            alert('An error occurred. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    }
+});
+</script>
+{% endblock %}
