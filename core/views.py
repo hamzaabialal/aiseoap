@@ -1,9 +1,12 @@
-from django.contrib.auth import authenticate
-from django.views.generic import TemplateView
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.views.generic import TemplateView, FormView
 from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from .form import SignUpForm
 from .models import SignupModel
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -37,6 +40,7 @@ class LoginView(generics.CreateAPIView):
         user = authenticate(email=email, password=password)
 
         if user is not None:
+            login(request, user)
             # Generate tokens if authentication succeeds
             refresh = RefreshToken.for_user(user)
             access_token = str(refresh.access_token)

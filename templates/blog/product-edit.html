@@ -1,0 +1,222 @@
+{% extends "vertical_base.html" %}
+{% load static i18n %}
+{% block head_title %}{% trans "Add & Edit Blog" %}{% endblock head_title %}
+{% block extra_css %}
+
+<!-- third party css -->
+<link href="{% static 'libs/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'libs/dropzone/min/dropzone.min.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'libs/quill/quill.core.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'libs/quill/quill.snow.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'libs/flatpickr/flatpickr.min.css' %}" rel="stylesheet" type="text/css"/>  <!-- Add this line -->
+<!-- third party css end -->
+
+{% endblock %}
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
+            <li class="breadcrumb-item"><a href="javascript: void(0);">eCommerce</a></li>
+            <li class="breadcrumb-item active">Blog Edit</li>
+          </ol>
+        </div>
+        <h3 class="page-title">Blog</h3>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+
+  <div>
+    <div class="card">
+      <div class="card-body">
+        <h3 class="text-uppercase bg-light p-2 mt-0 mb-3">Let’s start with basic info</h3>
+        <!-- Basic Info Section -->
+        <div class="mb-3 row align-items-center">
+          <div class="col-md-3">
+            <h4>What is Blog  name? <span class="text-danger">*</span></h4>
+            <input type="text" id="blog-name" class="form-control" placeholder="e.g: My Awesome Blog" />
+          </div>
+          <div class="col-md-3">
+            <h4>What is your Featured Product? <span class="text-danger">*</span></h4>
+            <input type="text" id="featured-product" class="form-control" placeholder="e.g: Latest Gadget" />
+          </div>
+          <div class="col-md-3">
+            <h4>Which Location to Target <span class="text-danger">*</span></h4>
+
+            <input type="text" id="target-location" class="form-control" placeholder="e.g: New York" />
+          </div>
+          <div class="col-md-3">
+            <label for="csv-upload" class="btn btn-primary" id="upload-csv">
+              Upload a CSV File
+            </label>
+            <input type="file" id="csv-upload" class="d-none" accept=".csv" />
+
+        </div>
+
+        <!-- Campaign Category Section -->
+        <div class="mb-3">
+          <h4>What is campaign category?</h4>
+          <div id="campaign-category" class="d-flex flex-wrap gap-2">
+            <button type="button" class="btn btn-outline-primary">Sales</button>
+            <button type="button" class="btn btn-outline-primary">Rankings</button>
+            <button type="button" class="btn btn-outline-primary">Optimisation</button>
+            <button type="button" class="btn btn-outline-primary">Awareness</button>
+            <button type="button" class="btn btn-outline-primary">Bulk Creation</button>
+            <button type="button" class="btn btn-outline-primary">Value</button>
+            <button type="button" class="btn btn-outline-primary">General</button>
+            <button type="button" class="btn btn-outline-primary">e.g text</button>
+            <a href="#" class="ms-3">View all</a>
+          </div>
+        </div>
+
+        <!-- Blog Limit Section -->
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <div>
+            <h4 class="mb-1">Let’s set your blog limit.</h4>
+            <h5 class="mb-1">When your campaign hits the prescribed limits it will automatically shut down.</h5>
+            <input type="text" class="form-control rounded-pill" placeholder="1000 Pages" id="limit" />
+          </div>
+          <div class="mx-2"> <!-- Adjusted margin -->
+            <h5 class="mb-0">OR</h5>
+          </div>
+          <div>
+            <h5 class="mb-1">How many impressions do you want to reach?</h5>
+            <input type="text" class="form-control rounded-pill" placeholder="1000 Hits" />
+          </div>
+        </div>
+        
+
+
+                <!-- Schedule Blog Section -->
+                <div>
+                  <h4 class="text-uppercase bg-light p-2 mt-0 mb-3">Let’s schedule your blog</h4>
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                      <h6>Start Date</h6>
+                      <input type="text" id="start-date" class="form-control datepicker" placeholder="20-12-2019" />
+                    </div>
+                    <div>
+                      <h6>End Date</h6>
+                      <input type="text" id="end-date" class="form-control datepicker" placeholder="20-12-2019" />
+                    </div>
+                    <div>
+                      <h6>Start Time</h6>
+                      <input type="text" id="start-time" class="form-control timepicker" placeholder="11:00" />
+                    </div>
+                    <div>
+                      <h6>End Time</h6>
+                      <input type="text" id="end-time" class="form-control timepicker" placeholder="24:00" />
+                    </div>
+                  </div>
+                </div>
+                
+                
+                
+
+                <div class="mb-3">
+                  <h4>Select location for the campaign</h4>
+                  <p>Dummy text is also used to demonstrate the appearance of different typefaces and layouts, and in general the content of dummy text is nonsensical.</p>
+                  <button type="button" class="btn btn-outline-primary">
+                    <i class="mdi mdi-plus-circle-outline"></i> Add Document
+                  </button>
+                  <p class="mt-2">*upload files in Excel & csv format</p>
+                </div>
+          <div class="row">
+    <div class="col-md-12 text-center">
+      <button id="blog-button" class="btn btn-primary mt-3">Write Blog</button>
+    </div>
+  </div>
+</div>
+                
+
+    <!-- end row -->
+  </div>
+</div>
+<!-- container -->
+{% endblock %}
+{% block extra_javascript %}
+
+<!-- Third party js -->
+<script src="{% static 'libs/select2/js/select2.min.js' %}"></script>
+<script src="{% static 'libs/dropzone/min/dropzone.min.js' %}"></script>
+<script src="{% static 'libs/quill/quill.min.js' %}"></script>
+<script src="{% static 'libs/flatpickr/flatpickr.min.js' %}"></script> <!-- Add this line -->
+<!-- Third party js ends -->
+
+<!-- Init js -->
+<script src="{% static 'js/pages/form-fileuploads.init.js' %}"></script>
+<script src="{% static 'js/pages/add-product.init.js' %}"></script>
+<script>
+  // Initialize datepicker and timepicker
+  flatpickr(".datepicker", {
+    dateFormat: "d-m-Y",
+  });
+
+  flatpickr(".timepicker", {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+  });
+document.getElementById("blog-button").addEventListener("click", function(e) {
+    e.preventDefault();
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+        window.location.href = "/auth/login/";
+        return;
+    }
+
+    const topic = document.getElementById("blog-name").value;
+    const product = document.getElementById("featured-product").value;
+    const location = document.getElementById("target-location").value;
+    const upload_csv = document.getElementById("upload-csv").value;
+    const limit = document.getElementById("limit").value;
+
+
+    // Debugging: Log the topic to the console
+    console.log("Topic:", topic);
+
+    if (!topic) {
+        alert("Please enter a blog name.");
+        return;
+    }
+
+    fetch("/blog/blog_create/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({
+        blog_name: topic,
+          product: product,
+          location: location,
+            upload_csv: upload_csv,
+          limit: limit
+      })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("Success:", data);
+        // Handle success
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+        // Handle error
+    });
+});
+
+</script>
+<!-- Init js end -->
+
+{% endblock %}

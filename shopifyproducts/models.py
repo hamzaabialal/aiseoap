@@ -28,6 +28,8 @@ class Products(models.Model):
     admin_graphql_api_id = models.CharField(max_length=255, blank=True, null=True)
     variants = models.JSONField(blank=True, null=True)
     product_id = models.CharField(max_length=76, null=True, blank=True)
+    img = models.CharField(max_length=1000, blank=True, null=True)
+    product_url = models.CharField(max_length=1000, blank=True, null=True)
 
     def __str__(self):
         return self.title

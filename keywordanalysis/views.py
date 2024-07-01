@@ -28,9 +28,9 @@ class KeywordSeoScoreView(APIView):
     def post(self, request, *args, **kwargs):
         # Fetch descriptions from Products model
         descriptions = Products.objects.filter(user=request.user).values_list('description', flat=True)
-        description_text = " ".join(descriptions)
+        description_text = " ".join(descriptions[0:10])
 
-        user_input =  f"Please extract the relevant keywords from the following descriptions: {description_text} Provide the SEO scores in the form of a JSON response. Remove the phrase Here is the JSON response: from the output."
+        user_input =  f"Please extract the relevant keywords from the following descriptions: {description_text} Provide the SEO scores, Your Output is Only in the form of a JSON response.:."
 
         if not user_input:
             return Response({"error": "Content is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -55,9 +55,9 @@ class KeywordRankingView(APIView):
     def post(self, request, *args, **kwargs):
         # Fetch descriptions from Products model
         descriptions = Products.objects.filter(user=request.user).values_list('description', flat=True)
-        description_text = " ".join(descriptions)
+        description_text = " ".join(descriptions[0:10])
 
-        user_input =  f"Please extract the relevant keywords from the following descriptions: {description_text} Provide the Google Ranking of These keywords in the form of a JSON response. Remove the phrase Here is the JSON response: from the output."
+        user_input =  f"You Are keyword extractor bot Extract relevant keywords from the following descriptions: {description_text}.  E.g, If I need a tool named \"Keyword\"'s return value as an argument of \"keywords\", then the arguments array for \"keywords\" would look something like this considering:  {{keyword: \"name\", ranking:, 2]}} Your output should also be an array of these objects, each one having a name of the tool, the arguments to pass to it and the invocationHashm Include the enclosing markdown codeblock \\\`json\\\`"
 
         if not user_input:
             return Response({"error": "Content is required"}, status=status.HTTP_400_BAD_REQUEST)

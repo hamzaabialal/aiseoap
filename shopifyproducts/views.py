@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.utils.timezone import now
+from django.views.generic import TemplateView
 from rest_framework import status
 import requests
 from django.shortcuts import render, get_object_or_404
@@ -26,6 +27,7 @@ class FetchProductsFromShopify(APIView):
         store = StoreManagement.objects.get(user=request.user)
         access_token = ShopifyAccessToken.objects.get(user=request.user).access_token
         shopify_url = f"https://{store.store_name}.myshopify.com/admin/api/2021-07/products.json"
+        base_url = f"https://{store.store_name}.myshopify.com/"
         headers = {
             "X-Shopify-Access-Token": access_token
         }
@@ -33,6 +35,8 @@ class FetchProductsFromShopify(APIView):
         if response.status_code == 200:
             products = response.json().get("products", [])
             for product_data in products:
+                handle = product_data["handle"]
+                product_url = f"{base_url}products/{handle}"
                 product, created = Products.objects.update_or_create(
                     shopify_product_id=product_data["id"],
                     defaults={
@@ -54,6 +58,8 @@ class FetchProductsFromShopify(APIView):
                         "status": product_data["status"],
                         "admin_graphql_api_id": product_data["admin_graphql_api_id"],
                         "variants": product_data["variants"],
+                        "img": product_data["images"][0]["src"],
+                        "product_url": product_url
 
 
 
@@ -131,9 +137,12 @@ class FetchShopifyAnalytics(APIView):
         total_sales = self.calculate_total_sales(orders)
         total_orders = len(orders)
         products_sold = sum(sum(int(line_item['quantity']) for line_item in order['line_items']) for order in orders)
-        new_customers = sum(1 for order in orders if 'customer' in order and order['customer'] and order['customer'].get('orders_count', 0) == 1)
+        new_customers = sum(1 for order in orders if
+                            'customer' in order and order['customer'] and order['customer'].get('orders_count', 0) == 1)
         average_order_value = total_sales / total_orders if total_orders > 0 else 0
-        repeat_customers = sum(1 for order in orders if 'customer' in order and order['customer'] and order['customer'].get('orders_count', 0) > 1)
+        repeat_customers = sum(1 for order in orders if
+                               'customer' in order and order['customer'] and order['customer'].get('orders_count',
+                                                                                                   0) > 1)
         repeat_customer_rate = repeat_customers / total_orders if total_orders > 0 else 0
 
         sales_by_country = defaultdict(float)
@@ -171,6 +180,11 @@ class FetchShopifyAnalytics(APIView):
 
         # Set your target sale amount here
         target_sale = 200000
+        countries = []
+        countries_data = []
+        for country in sales_by_country:
+            countries.append(str(country))
+            countries_data.append(round(sales_by_country[country], 2))
 
         analytics_data = {
             "total_sales": total_sales,
@@ -188,7 +202,23 @@ class FetchShopifyAnalytics(APIView):
             "target_sale": target_sale,
             "last_week_sale": last_week_sales,
             "last_month_sale": last_month_sales,
+            "countries": countries,
+            "countries_data": countries_data,
+
         }
+
         AnalyticsData.objects.create(user=request.user, data=analytics_data)
 
         return Response({"message": "Analytics data saved successfully"}, status=status.HTTP_200_OK)
+
+
+class ProductsPageView(TemplateView):
+    template_name = 'products/products.html'
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        products = Products.objects.filter(user=self.request.user)
+        context['products'] = products
+        return context
